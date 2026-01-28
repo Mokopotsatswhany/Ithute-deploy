@@ -1,12 +1,12 @@
-"""
-URL configuration for LEC project.
-"""
-from django.contrib import admin
-from django.urls import path, include
-from django.contrib.auth import views as auth_views
+from django.urls import path
+from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),#path for login page
-    path('', include('project.urls')),  
+    path('login/', views.user_login, name='user_login'),
+    path('logout/', views.user_logout, name='user_logout'),
+    path('', views.dashboard, name='dashboard'),
+    path('my-tickets/', views.my_tickets, name='my_tickets'),
+    path('report/', views.report_problem, name='report_problem'),
+    path('tech-dashboard/', views.tech_dashboard, name='tech_dashboard'),
+    path('track/<str:token>/', views.track_ticket, name='track_ticket'),
 ]

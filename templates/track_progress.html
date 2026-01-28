@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="form-section">
+    <h2>📊 Track Ticket Status</h2>
+    
+    <!-- TOKEN SEARCH FORM -->
+    <form method="get" style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 30px;">
+        <div style="max-width: 400px; margin: 0 auto;">
+            <label style="font-size: 18px;">Enter Token (e.g. #X7K9P2M4):</label>
+            <input type="text" name="token" placeholder="X7K9P2M4" style="font-size: 18px; padding: 12px;" required>
+            <button type="submit" class="lec-button" style="margin-top: 10px; width: 100%;">🔍 Track Status</button>
+        </div>
+    </form>
+
+    <!-- SHOW SPECIFIC TICKET IF TOKEN ENTERED -->
+    {% if request.GET.token %}
+        {% with ticket=Tickets|filter_by_token:request.GET.token|first %}
+        {% if ticket and ticket.reporter == user %}
+        <div class="summary">
+            <h2>Ticket #{{ ticket.token }} - Status</h2>
+            <h3>Status: <span style="color: {% if ticket.status == 'solved' %}#4caf50{% elif ticket.status == 'in_progress' %}#ff9800{% else %}#9e9e9e{% endif %}">{{ ticket.status|title }}</span></h3>
+            <p><strong>Branch:</strong> {{ ticket.branch }}</p>
+            <p><strong>Problem:</strong> {{ ticket.description }}</p>
+            <p><strong>Classification:</strong> {{ ticket.ai_classification }}</p>
+            {% if ticket.tech_notes %}
+                <p><strong>Tech Notes:</strong> {{ ticket.tech_notes }}</p>
+            {% endif %}
+        </div>
+        {% else %}
+            <div style="text-align: center; padding: 50px; background: #fff3cd; border-radius: 10px;">
+                <h3>❌ Token not found or not yours</h3>
+                <p>Enter correct token or create new ticket</p>
+            </div>
+        {% endif %}
+        {% endwith %}
+    {% endif %}
+</div>
+
+<!-- ALWAYS SHOW REPORT OPTION -->
+<div style="text-align: center; margin-top: 40px;">
+    <a href="{% url 'report_problem' %}" class="lec-button" style="font-size: 18px; padding: 15px 30px;">📝 No token? Report New Problem</a>
+</div>
+{% endblock %}

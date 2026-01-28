@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="text-align: center; padding: 50px;">
+    <h1>👋 Welcome {{ profile.full_name }}</h1>
+    <p><strong>{{ profile.branch }}</strong></p>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 50px;">
+        <div style="background: #e3f2fd; padding: 40px; border-radius: 15px; border-left: 8px solid #2196f3;">
+            <h2 style="color: #1976d2;">📊 View Status</h2>
+            <p style="font-size: 18px;">Track existing tickets</p>
+            <a href="/my-tickets/" style="background: #2196f3; color: white; padding: 20px 40px; border-radius: 10px; text-decoration: none; font-size: 18px; font-weight: bold; display: inline-block; margin-top: 20px;">VIEW STATUS</a>
+        </div>
+        
+        <div style="background: #e8f5e8; padding: 40px; border-radius: 15px; border-left: 8px solid #4caf50;">
+            <h2 style="color: #388e3c;">📝 Report Problem</h2>
+            <p style="font-size: 18px;">Submit new IT issue</p>
+            <a href="/report/" style="background: #4caf50; color: white; padding: 20px 40px; border-radius: 10px; text-decoration: none; font-size: 18px; font-weight: bold; display: inline-block; margin-top: 20px;">REPORT PROBLEM</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>🔧 Tech Dashboard - {{ profile.full_name }}</h2>
+
+{% if tickets %}
+    {% for ticket in tickets %}
+    <div class="ticket-grid {% if ticket.severity == 'high' %}priority-high{% endif %}">
+        <div>
+            <h3>#{{ ticket.token }}</h3>
+            <p>{{ ticket.reporter.userprofile.full_name }}</p>
+            <p><strong>{{ ticket.branch }}</strong></p>
+        </div>
+        <div>
+            <p><strong>{{ ticket.description }}</strong></p>
+            <p><strong>{{ ticket.ai_classification }} ({{ ticket.severity|upper }})</strong></p>
+        </div>
+        <div>
+            <a href="/update/{{ ticket.token }}/" class="lec-button">UPDATE</a>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <p style="text-align: center; padding: 50px; font-size: 24px;">🎉 No pending tickets!</p>
+{% endif %}
+{% endblock %}

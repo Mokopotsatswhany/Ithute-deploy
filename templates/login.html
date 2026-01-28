@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="form-section">
+    <h2>🔐 LEC IT Helpdesk Login</h2>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div style="padding: 10px; margin: 10px 0; border-radius: 5px; background: #d4edda; color: #155724;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-section">
+            <label>Username:</label>
+            <input type="text" name="username" required>
+        </div>
+        <div class="form-section">
+            <label>Password:</label>
+            <input type="password" name="password" required>
+        </div>
+        <button type="submit" class="lec-button">Login → Dashboard</button>
+    </form>
+    
+    <p style="margin-top: 20px;"><a href="/register/">New user? Register</a></p>
+</div>
+{% endblock %}
