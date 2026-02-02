@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h2 class="update-title">Track Your Tickets</h2>
+    
+    <!-- LOGIN  -->
+    {% if user.is_authenticated %}
+        {% if user_tickets %}
+            <div class="summary info-summary">
+                <h3>
+                    Your Tickets ({{ user_tickets.count }}) 
+                    {% if user.is_staff %}<span class="admin-badge">[ADMIN]</span>{% endif %}
+                </h3>
+            </div>
+            
+            <!-- TOKEN SEARCH (Own tickets only) -->
+            <form method="GET" class="track-form mb-4">
+                <input type="text" name="token" placeholder="Search your tickets..." 
+                       value="{{ request.GET.token }}" class="track-input" maxlength="8">
+                <button type="submit" class="lec-button">SEARCH</button>
+            </form>
+            
+            {% for ticket in user_tickets %}
+            <div class="ticket-grid">
+                <div>
+                    <h3>#{{ ticket.token }}</h3>
+                    <p><strong>{{ ticket.branch }}</strong></p>
+                </div>
+                <div>
+                    <p>{{ ticket.description|truncatewords:15 }}</p>
+                    <p class="ticket-date">{{ ticket.get_status_display|upper }}</p>
+                </div>
+                <div>
+                    <a href="{% url 'ticket_detail' ticket.token %}" class="lec-button">VIEW STATUS</a>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="summary">
+                <p>No tickets reported yet. <a href="{% url 'report_problem' %}">Report a problem</a></p>
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="summary priority-high">
+            <h3>Please login to view your tickets</h3>
+            <a href="{% url 'login' %}" class="lec-button">Login</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

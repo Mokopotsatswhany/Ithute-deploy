@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h2 class="update-title">Ticket Details</h2>
+    
+    {% if ticket %}
+        <div class="summary info-summary">
+            <h3>Ticket #{{ ticket.token }}</h3>
+            <p><strong>Branch:</strong> {{ ticket.branch|default:"N/A" }}</p>
+            <p><strong>Status:</strong> <span class="ticket-date">{{ ticket.get_status_display|upper }}</span></p>
+            {% if ticket.severity %}<p><strong>Severity:</strong> {{ ticket.severity|upper }}</p>{% endif %}
+            {% if ticket.ai_classification %}<p><strong>AI Classification:</strong> {{ ticket.ai_classification|title }}</p>{% endif %}
+            {% if ticket.assigned_to %}<p><strong>Assigned To:</strong> {{ ticket.assigned_to.userprofile.full_name }}</p>{% endif %}
+        </div>
+        
+        <div class="ticket-grid">
+            <div>
+                <h4>Issue Description</h4>
+                <p>{{ ticket.description }}</p>
+            </div>
+            <div>
+                <p><strong>Reported:</strong> {{ ticket.created_at|date:"M d, Y H:i" }}</p>
+                {% if ticket.updated_at %}<p><strong>Last Updated:</strong> {{ ticket.updated_at|date:"M d, Y H:i" }}</p>{% endif %}
+                {% if ticket.tech_notes %}<p><strong>Tech Notes:</strong> {{ ticket.tech_notes }}</p>{% endif %}
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <a href="{% url 'track_ticket' %}" class="lec-button"> View Tickets</a>
+
+            {% if ticket.status == 'solved' and ticket.reporter == user %}
+                <a href="{% url 'reopen_ticket' ticket.token %}" class="lec-button">Reopen Ticket</a>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="summary priority-high">
+            <h3>Ticket not found or access denied</h3>
+            <a href="{% url 'track_ticket' %}" class="lec-button">Back to My Tickets</a>
+
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,21 +1,49 @@
 {% extends 'base.html' %}
 {% block content %}
-<div style="text-align: center; padding: 50px;">
-    <h1>👋 Welcome {{ profile.full_name }}</h1>
-    <p><strong>{{ profile.branch }}</strong></p>
+<div class="dashboard-container">
+    <h2>LEC IT Dashboard - {{ profile.full_name }}</h2>
     
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 50px;">
-        <div style="background: #e3f2fd; padding: 40px; border-radius: 15px; border-left: 8px solid #2196f3;">
-            <h2 style="color: #1976d2;">📊 View Status</h2>
-            <p style="font-size: 18px;">Track existing tickets</p>
-            <a href="/my-tickets/" style="background: #2196f3; color: white; padding: 20px 40px; border-radius: 10px; text-decoration: none; font-size: 18px; font-weight: bold; display: inline-block; margin-top: 20px;">VIEW STATUS</a>
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <h3>{{ total_tickets|default:0 }}</h3>
+                <p>Total Tickets</p>
+            </div>
         </div>
-        
-        <div style="background: #e8f5e8; padding: 40px; border-radius: 15px; border-left: 8px solid #4caf50;">
-            <h2 style="color: #388e3c;">📝 Report Problem</h2>
-            <p style="font-size: 18px;">Submit new IT issue</p>
-            <a href="/report/" style="background: #4caf50; color: white; padding: 20px 40px; border-radius: 10px; text-decoration: none; font-size: 18px; font-weight: bold; display: inline-block; margin-top: 20px;">REPORT PROBLEM</a>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <h3>{{ pending_tickets|default:0 }}</h3>
+                <p>Pending</p>
+            </div>
         </div>
+    </div>
+    
+    <!-- ACTIVE TICKETS TABLE - NO BADGES -->
+    <div class="card">
+        <h5>Active Tickets (Needs Action)</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Token</th><th>Priority</th><th>Status</th><th>Reported</th><th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ticket in active_tickets %}
+                <tr>
+                    <td><strong>#{{ ticket.token }}</strong></td>
+                    <td>{{ ticket.priority }}</td>        <!-- Plain text -->
+                    <td>{{ ticket.get_status_display }}</td>
+                    <td>{{ ticket.created_at|timesince }} ago</td>
+                    <td>
+                        <a href="{% url 'tech_update' ticket.token %}" class="btn btn-sm btn-primary">Manage</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5">No active tickets</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock %}

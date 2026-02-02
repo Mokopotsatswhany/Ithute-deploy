@@ -1,29 +1,41 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="form-section">
-    <h2>🔐 LEC IT Helpdesk Login</h2>
-    
-    {% if messages %}
-        {% for message in messages %}
-            <div style="padding: 10px; margin: 10px 0; border-radius: 5px; background: #d4edda; color: #155724;">
-                {{ message }}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3> LEC Staff Login</h3>
+                    <p>LEC IT Helpdesk</p>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}success{% endif %} alert-dismissible fade show">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label fw-bold"> Enter Username</label>
+                            <input type="text" class="form-control" name="username" required 
+                                   placeholder="Username">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Enter Password</label>
+                            <input type="password" class="form-control" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 btn-lg">
+                             Login
+                        </button>
+                    </form>
+                </div>
             </div>
-        {% endfor %}
-    {% endif %}
-    
-    <form method="post">
-        {% csrf_token %}
-        <div class="form-section">
-            <label>Username:</label>
-            <input type="text" name="username" required>
         </div>
-        <div class="form-section">
-            <label>Password:</label>
-            <input type="password" name="password" required>
-        </div>
-        <button type="submit" class="lec-button">Login → Dashboard</button>
-    </form>
-    
-    <p style="margin-top: 20px;"><a href="/register/">New user? Register</a></p>
+    </div>
 </div>
 {% endblock %}

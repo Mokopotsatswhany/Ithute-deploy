@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>🔧 Tech Dashboard - {{ profile.full_name }}</h2>
+<h2> Tech Dashboard - {{ profile.full_name }}</h2>
 
 {% if tickets %}
     {% for ticket in tickets %}
@@ -20,6 +20,6 @@
     </div>
     {% endfor %}
 {% else %}
-    <p style="text-align: center; padding: 50px; font-size: 24px;">🎉 No pending tickets!</p>
+    <p style="text-align: center; padding: 50px; font-size: 24px;"> No problems reported</p>
 {% endif %}
 {% endblock %}

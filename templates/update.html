@@ -1,30 +1,33 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="form-section">
-    <h2>🔧 Update Status #{{ ticket.token }}</h2>
+<div class="container">
+    <h2 class="update-title">Update Status #{{ ticket.token }}</h2>
     
-    <div class="summary">
+    <div class="ticket-summary">
         <p><strong>{{ ticket.reporter.userprofile.full_name }}</strong> from {{ ticket.branch }}</p>
         <p><strong>Problem:</strong> {{ ticket.description }}</p>
         <p><strong>Classification:</strong> {{ ticket.ai_classification }} ({{ ticket.severity|upper }})</p>
     </div>
     
-    <form method="post">
+    <form method="post" class="update-form">
         {% csrf_token %}
-        <div class="form-section">
+        <div class="form-group">
             <label>Status:</label>
             <select name="status" required>
                 <option value="pending">Pending</option>
                 <option value="in_progress">In Progress</option>
-                <option value="solved">✅ SOLVED</option>
+                <option value="solved">SOLVED</option>
             </select>
         </div>
-        <div class="form-section">
-            <label>✅ WHAT YOU DID:</label>
+        
+        <div class="form-group">
+            <label>What you did:</label>
             <textarea name="notes" rows="5" placeholder="Replaced monitor cable - screen working now" required>{{ ticket.tech_notes }}</textarea>
         </div>
-        <button type="submit" class="lec-button">💾 Save Update</button>
+        
+        <button type="submit" class="update-btn">Save Update</button>
     </form>
-    <a href="/tech-dashboard/" class="lec-button">← Tech Dashboard</a>
+    
+    <a href="/tech-dashboard/" class="dashboard-btn">Tech Dashboard</a>
 </div>
 {% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h2 class="track-title">Track the Progress</h2>
+    <p class="track-subtitle">Enter your ticket number</p>
+    
+    <form method="GET" class="track-form">
+        <input type="text" name="token" class="track-input" 
+               placeholder="Token no" maxlength="8" value="{{ request.GET.token|upper }}" required>
+        <button class="lec-button track-btn" type="submit">Track</button>
+    </form>
+    
+    {% if ticket %}
+        <div class="summary success-summary">
+            <h5>#{{ ticket.token }} - {{ ticket.get_status_display }}</h5>
+            {% if ticket.severity == 'HIGH' or ticket.severity == 'CRITICAL' %}
+                <span class="badge bg-danger">HIGH</span>
+            {% endif %}
+        </div>
+        <a href="{% url 'track_ticket' ticket.token %}" class="lec-button full-width-btn">View Details</a>
+        
+    {% elif request.GET.token %}
+        <div class="summary priority-high error-summary">
+            <h5>{{ request.GET.token|upper }} not found</h5>
+        </div>
+        <a href="/track/" class="lec-button full-width-btn">Try Again</a>
+    {% endif %}
+    
+    <p class="contact-text">
+    We are here to help you
+    </p>
+
+</div>
+{% endblock %}

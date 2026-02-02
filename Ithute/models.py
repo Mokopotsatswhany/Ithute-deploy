@@ -11,9 +11,12 @@ class UserProfile(models.Model):
     full_name = models.CharField(max_length=100)
     branch = models.CharField(max_length=100)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='staff')
+    public_key_pem = models.TextField(blank=True, null=True)  # Store public key
+    signature_method = models.CharField(max_length=20, default='rsa')
     
     def __str__(self):
         return f"{self.full_name} - {self.branch}"
+
 
 class Ticket(models.Model):
     STATUS_CHOICES = [
@@ -32,6 +35,8 @@ class Ticket(models.Model):
     tech_notes = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    solved_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='solved_tickets')
+    solved_at = models.DateTimeField(null=True, blank=True)
     
     class Meta:
         ordering = ['-created_at']
