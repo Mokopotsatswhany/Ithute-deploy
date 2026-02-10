@@ -15,7 +15,7 @@
             
             <!-- TOKEN SEARCH (Own tickets only) -->
             <form method="GET" class="track-form mb-4">
-                <input type="text" name="token" placeholder="Search your tickets..." 
+                <input type="text" name="token" placeholder="Search your ticket here..." 
                        value="{{ request.GET.token }}" class="track-input" maxlength="8">
                 <button type="submit" class="lec-button">SEARCH</button>
             </form>
@@ -35,11 +35,7 @@
                 </div>
             </div>
             {% endfor %}
-        {% else %}
-            <div class="summary">
-                <p>No tickets reported yet. <a href="{% url 'report_problem' %}">Report a problem</a></p>
-            </div>
-        {% endif %}
+       
     {% else %}
         <div class="summary priority-high">
             <h3>Please login to view your tickets</h3>

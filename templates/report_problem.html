@@ -1,21 +1,69 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container">
-    {% if user.is_authenticated %}
-        <!-- REPORT FORM -->
-        <h2>Report IT Problem</h2>
-        <form method="POST">
-            {% csrf_token %}
-            <textarea name="description" placeholder="Describe your IT issue..." required></textarea>
-            <button type="submit" class="lec-button">Report Problem</button>
-        </form>
-        <a href="{% url 'track' %}" class="lec-button secondary-btn">View My Tickets</a>
-    {% else %}
-        <div class="summary priority-high">
-            <h3>Please login to report problems</h3>
-            <p>LEC employees must login to report IT issues.</p>
-            <a href="{% url 'login' %}?next={% url 'report_problem' %}" class="lec-button">Login</a>
+    <!-- REPORT FORM -->
+    <h2 class="tickets-title">Report Problem</h2>
+    
+    <form method="post" class="report-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Problem description </label>
+            <textarea name="description" rows="4" 
+                      placeholder=" " required></textarea>
         </div>
+        <button type="submit" class="primary-btn full-width">Report </button>
+    </form>
+    
+    <!-- SEARCH SECTION  -->
+    <div class="search-section mt-4">
+        <form method="get" class="inline-search">
+            <input type="text" name="token" value="{{ search_token }}" 
+                   placeholder="Enter ticket here" required>
+            <button type="submit" class="primary-btn">Search Ticket</button>
+        </form>
+    </div>
+
+    <!-- TICKET DETAILS ONLY AFTER SEARCH -->
+    {% if ticket %}
+    <div class="ticket-detail mt-5">
+        <h3>Ticket #{{ ticket.token }} <span class="status-badge {{ ticket.status }}">{{ ticket.status|title }}</span></h3>
+        
+        <div class="info-grid">
+        
+            <div>
+                <p><strong>{{ ticket.ai_classification }}</strong> - {{ ticket.severity }}</p>
+                <p> {{ ticket.created_at|date:"M d, Y H:i" }}</p>
+            </div>
+        </div>
+        
+        <div class="description-box">
+            <h6>Problem Description</h6>
+            <p>{{ ticket.description }}</p>
+        </div>
+        
+        {% if ticket.tech_notes %}
+        <div class="description-box">
+            <h6>Tech Notes</h6>
+            <p>{{ ticket.tech_notes }}</p>
+        </div>
+        {% endif %}
+
+        {% if profile.role == 'tech' or user.is_staff %}
+        <form method="post" class="update-form mt-4">
+            {% csrf_token %}
+            <input type="hidden" name="token" value="{{ ticket.token }}">
+            <div class="two-column-buttons">
+                <select name="status">
+                    <option value="pending" {% if ticket.status == 'pending' %}selected{% endif %}>Pending</option>
+                    <option value="in_progress" {% if ticket.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+                    <option value="solved" {% if ticket.status == 'solved' %}selected{% endif %}>Solved</option>
+                </select>
+                <textarea name="tech_notes" rows="3">{{ ticket.tech_notes }}</textarea>
+                <button type="submit" class="primary-btn">Update Ticket</button>
+            </div>
+        </form>
+        {% endif %}
+    </div>
     {% endif %}
 </div>
 {% endblock %}

@@ -1,41 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white text-center">
-                    <h3> LEC Staff Login</h3>
-                    <p>LEC IT Helpdesk</p>
-                </div>
-                <div class="card-body">
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}success{% endif %} alert-dismissible fade show">
-                                {{ message }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                    
-                    <form method="post">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <label class="form-label fw-bold"> Enter Username</label>
-                            <input type="text" class="form-control" name="username" required 
-                                   placeholder="Username">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Enter Password</label>
-                            <input type="password" class="form-control" name="password" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100 btn-lg">
-                             Login
-                        </button>
-                    </form>
-                </div>
+<div class="container">
+    <h2 class="tickets-title">LEC ReportingLogin</h2>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="summary {% if message.tags == 'error' %}success-summary{% else %}info-summary{% endif %}">
+                {{ message }}
             </div>
+        {% endfor %}
+    {% endif %}
+    
+    <form method="post">
+        {% csrf_token %}
+        <div>
+            <label>Username</label>
+            <input type="text" name="username" required placeholder=" ">
         </div>
-    </div>
+        <div>
+            <label>Password</label>
+            <input type="password" name="password" required>
+        </div>
+        <button type="submit" class="primary-btn">Login</button>
+    </form>
+    
 </div>
 {% endblock %}

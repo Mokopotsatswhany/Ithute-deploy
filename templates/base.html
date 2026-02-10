@@ -1,33 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{% block title %}LEC IntelliSupport{% endblock %}</title>
+    <title>{% block title %}LEC Reporting System{% endblock %}</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/lec-style.css' %}">
     {% block extra_css %}{% endblock %}
 </head>
-<body>
-    <div class="container">
-        <div class="lec-header">
-            <h1>Lesotho Electricity Company</h1>
-            <h2>IntelliSupport Portal - {% block subtitle %}Staff Dashboard{% endblock %}</h2>
-            {% if user.is_authenticated %}
-                <p>{{ user.userprofile.full_name }} | {{ user.userprofile.branch }}</p>
-                <div style="margin-top: 15px;">
-                    <a href="/report/" class="lec-button">Report Problem</a>
-                    {% if user.userprofile.role == 'tech' %}
-                        <a href="/tech-dashboard/" class="lec-button">Tech Dashboard</a>
-                    {% endif %}
-                    <a href="/logout/" class="lec-button">Logout</a>
-                </div>
-            {% else %}
-                <div>
-                    <a href="/login/" class="lec-button">Login</a>
-                    <a href="/register/" class="lec-button">Register</a>
-                </div>
-            {% endif %}
-        </div>
-        
+<body>        
         {% if messages %}
             {% for message in messages %}
                 <div class="summary" style="{% if message.tags == 'error' %}background: linear-gradient(135deg, #f8d7da, #f5c6cb); border-left-color: #dc3545;{% endif %}">
